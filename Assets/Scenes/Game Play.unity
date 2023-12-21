@@ -220,7 +220,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 84.5
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -677,6 +677,7 @@ MonoBehaviour:
   bulletParent: {fileID: 1208723914}
   level: 0
   restartScreen: {fileID: 746529976}
+  bulletPrefeb: {fileID: 4433385955708020211, guid: 03715c148bbd947cfb343228cace300d, type: 3}
 --- !u!4 &302075526
 Transform:
   m_ObjectHideFlags: 0
@@ -817,7 +818,7 @@ MonoBehaviour:
   circle: {fileID: 1665694116}
   DefencRadius: 3
   bulletSpeed: 4
-  nearestEnemy: {fileID: 0}
+  jumpForce: 0.1
 --- !u!4 &316477125
 Transform:
   m_ObjectHideFlags: 0
@@ -1753,7 +1754,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 13, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2108,7 +2109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 346}
+  m_AnchoredPosition: {x: 0, y: 162}
   m_SizeDelta: {x: 350, y: 350}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1583989521

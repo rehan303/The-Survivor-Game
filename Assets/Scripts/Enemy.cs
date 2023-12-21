@@ -11,7 +11,10 @@ public class Enemy : MonoBehaviour, IHealth
     public Gradient color;
     public GameObject playerPos;
     public float enemySpeed;
-
+    public List<SkinnedMeshRenderer> skinnedMeshes = new List<SkinnedMeshRenderer>();
+    // Enemy bullet
+    bool isShooting = false;
+    public float bulletSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,9 +24,22 @@ public class Enemy : MonoBehaviour, IHealth
     public void OnInit()
     {
         healthBar.value = health;
-        mat.SetColor("_Color", color.Evaluate(health * .01f));
+        //mat.SetColor("_Color", color.Evaluate(health * .01f));
+        SetColorOnMat();
         playerPos = GameObject.FindWithTag("Player");
+        isShooting = false;
     }
+
+    void SetColorOnMat()
+    {
+        foreach (var mesh in skinnedMeshes)
+        {
+            mesh.material = mat;
+            mesh.material.SetColor("_Color", color.Evaluate(health * .01f));
+        }
+    }
+
+   
 
     // Update is called once per frame
     void Update()
@@ -34,7 +50,11 @@ public class Enemy : MonoBehaviour, IHealth
             {
                 if (enemySpeed > 0)
                     transform.position = Vector3.MoveTowards(transform.position, playerPos.transform.position, enemySpeed * Time.deltaTime);
-
+                else
+                {
+                    if (!isShooting)
+                        ShootTowardPlayer(playerPos.transform);
+                }
                 transform.transform.LookAt(playerPos.transform.position);
 
             }
@@ -43,12 +63,30 @@ public class Enemy : MonoBehaviour, IHealth
 
     }
 
+    void ShootTowardPlayer(Transform target)
+    {
+        isShooting = true;
+        GameObject bullet =GameManager.Instance.GetEnmeyBullet();
+        bullet.GetComponent<EnmeyBullet>().enmeyBody = transform;
+        bullet.transform.position = new Vector3(transform.position.x, transform.position.y + .5f, transform.position.z);
+        Vector3 shootDirection = (target.position - transform.position).normalized;
+        bullet.GetComponent<Rigidbody>().velocity = shootDirection * bulletSpeed;
+        StartCoroutine(ResetShoot());
+    }
+
+    IEnumerator ResetShoot()
+    {
+        yield return new WaitForSeconds(4f);
+        isShooting = false;
+
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Bullet"))
         {
             collision.collider.gameObject.SetActive(false);
-            HealthDamage(50);
+            HealthDamage(34);
         }
 
     }
@@ -58,8 +96,8 @@ public class Enemy : MonoBehaviour, IHealth
     {
         health -= value;
         healthBar.value = health;
-        mat.SetColor("_Color", color.Evaluate(health * .01f));
-
+        //mat.SetColor("_Color", color.Evaluate(health * .01f));
+        SetColorOnMat();
         if (health <= 0)
         {
             gameObject.SetActive(false);

@@ -408,6 +408,12 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   playerPos: {fileID: 0}
   enemySpeed: 0
+  skinnedMeshes:
+  - {fileID: 1713520961064679959}
+  - {fileID: 2196403148364929057}
+  - {fileID: 302787948164597876}
+  - {fileID: 7993416612170688999}
+  bulletSpeed: 10
 --- !u!1 &7962012252615230173
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,8 +729,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
+--- !u!137 &302787948164597876 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7493994522477772741, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
+  m_PrefabInstance: {fileID: 7796782469970950065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1713520961064679959 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8931792980716440998, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
+  m_PrefabInstance: {fileID: 7796782469970950065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2196403148364929057 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8234987354189410192, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
+  m_PrefabInstance: {fileID: 7796782469970950065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5652297285972124142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2468889828458600031, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
+  m_PrefabInstance: {fileID: 7796782469970950065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7993416612170688999 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 206583211730378326, guid: 4a46e821c58b5cd42b14eaab6d197266, type: 3}
   m_PrefabInstance: {fileID: 7796782469970950065}
   m_PrefabAsset: {fileID: 0}

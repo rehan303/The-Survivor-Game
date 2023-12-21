@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     float spawnTime = 1.5f;
     public GameObject restartScreen;
 
+    //enemy bullet
+    public GameObject bulletPrefeb;
+    List<GameObject> enemyBulletPoolList = new List<GameObject>();
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
         restartScreen.SetActive(false);
         InitializeBulletPool();
         InitializeEnmeyPool();
+        EnemyBulletPool();
         InitializeCoinsAndHelthBoxPool();
         player = GameObject.FindWithTag("Player").transform;
 
@@ -46,6 +51,37 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // enmey bullet pool 
+    void EnemyBulletPool()
+    {
+        for (int i = 0; i < bulletPoolSize; i++)
+        {
+            GameObject bullet = Instantiate(bulletPrefeb);
+            bullet.transform.parent = bulletParent;
+            bullet.SetActive(false);
+            enemyBulletPoolList.Add(bullet);
+        }
+    }
+
+    // get enmey bullet pool  
+    public GameObject GetEnmeyBullet()
+    {
+        foreach (var bullet in enemyBulletPoolList)
+        {
+            if (!bullet.activeInHierarchy)
+            {
+                bullet.SetActive(true);
+                return bullet;
+            }
+        }
+        GameObject newbullet = Instantiate(bulletPrefeb);
+        newbullet.transform.parent = bulletParent;
+        newbullet.SetActive(true);
+        enemyBulletPoolList.Add(newbullet);
+        return newbullet;
+    }
+
+    // coin and health box pool
     void InitializeCoinsAndHelthBoxPool()
     {
         for (int i = 0; i < enemyPoolSize / 3; i++)
@@ -126,6 +162,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // enmey pool
     void InitializeEnmeyPool()
     {
         for (int i = 0; i < enemyPoolSize; i++)
@@ -202,6 +239,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    // player bullet pool
     void InitializeBulletPool()
     {
         bulletPool = new List<GameObject>();
@@ -248,14 +287,14 @@ public class GameManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3(randomPoint.x, 0f, randomPoint.y);
 
         // generator random endmy
-        int randomEnemy = Random.Range(0, 4);
+        int randomEnemy =  Random.Range(0, 4);
         GameObject spawnEnemy;
         if (randomEnemy == 0)
             spawnEnemy = GetEnemyTypeOne();
         else if(randomEnemy == 1)
-            spawnEnemy = GetEnemyTypeTwo();
+            spawnEnemy = GetEnemyTypeOne();
         else if (randomEnemy == 2)
-            spawnEnemy = GetEnemyTypeTwo();
+            spawnEnemy = GetEnemyTypeOne();
         else
             spawnEnemy = GetEnemyTypeTwo();
 

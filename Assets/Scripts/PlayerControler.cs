@@ -29,10 +29,17 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
 
     public float bulletSpeed = 10f;
     bool isShooting;
-    public Transform nearestEnemy;
+
+    // player jump
+    bool isJump = false;
+    public float jumpForce =5;
+    Transform nearestEnemy;
+    Transform veryCloseEnemy;
+
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -55,13 +62,14 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
     /// <summary>
     /// set init values to the player
     /// </summary>
-   public void Init()
+    public void Init()
     {
         healthBar.value = health;
         xpBar.value = playerXp;
         levelShow.text = GameManager.Instance.level.ToString();
         mat.SetColor("_Color", color.Evaluate(health * .01f));
         isShooting = false;
+        isJump = false;
     }
 
     // Update is called once per frame
@@ -89,13 +97,18 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
 
         // Find and shoot enemy
         nearestEnemy = FindEnemyUnderTheRaduis();
+        
         if (nearestEnemy != null && !isShooting)
         {
             Shoot(nearestEnemy);
         }
-
+        // check if enemy is very close
+        //veryCloseEnemy = FindEnemyVeryColse();
+        //if (veryCloseEnemy != null && !isJump)
+        //    Jump(veryCloseEnemy);
 
     }
+
 
     Transform FindEnemyUnderTheRaduis()
     {
@@ -116,6 +129,8 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
 
         return nearestEnemy;
     }
+
+
     void Shoot(Transform target)
     {
         isShooting = true;
@@ -145,6 +160,37 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
         }
     }
 
+    Transform FindEnemyVeryColse()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, DefencRadius / 2, LayerMask.GetMask("Enemy"));
+
+        Transform nearestEnemy = null;
+        float minDistance = Mathf.Infinity;
+        foreach (Collider collider in colliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestEnemy = collider.transform;
+            }
+        }
+
+        return nearestEnemy;
+    }
+
+    void Jump(Transform target)
+    {
+        // Calculate the direction toward enemy
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0f;
+        direction.Normalize();
+       GetComponent<Rigidbody>().AddForce(direction * jumpForce, ForceMode.Impulse);
+
+
+    }
+
     public void HealthDamage(int value)
     {
         health -= value;
@@ -163,6 +209,11 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
         {
             HealthDamage(5);
         }
+        if (collision.collider.CompareTag("EnemyBullet"))
+        {
+            collision.collider.gameObject.SetActive(false);
+            HealthDamage(10);
+        }
 
     }
 
@@ -172,7 +223,7 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
         {
             other.gameObject.SetActive(false);
             // get xp
-            PlayerXp(5f);
+            PlayerXp(15f);
 
         }
 
@@ -182,7 +233,7 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
             // get xp
             PlayerXp(5f);
             // get health gen
-            HealthGen(30);
+            HealthGen(15);
 
 
 
@@ -197,7 +248,7 @@ public class PlayerControler : MonoBehaviour, IHealth, Ixp
         if (playerXp >= 100)
         {
             // Increase level in xp is >= 100
-           GameManager.Instance.level++;
+            GameManager.Instance.level++;
             // show level on screen
             levelShow.text = GameManager.Instance.level.ToString();
             playerXp = 0;
